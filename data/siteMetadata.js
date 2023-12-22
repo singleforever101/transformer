@@ -7,8 +7,8 @@ const siteMetadata = {
   language: 'en-us',
   theme: 'system', // system, dark or light
   siteUrl: 'https://www.transformer-near.com/',
-  siteLogo: '/static/images/logo.png',
-  socialBanner: '/static/images/transformer.png',
+  siteLogo: '/transformer.png',
+  socialBanner: '/transformer.png',
   mastodon: 'https://mastodon.social/@mastodonuser',
   email: 'address@yoursite.com',
   github: 'https://github.com',
