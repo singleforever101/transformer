@@ -6,7 +6,7 @@ const siteMetadata = {
   description: 'let $TRMR show you the way',
   language: 'en-us',
   theme: 'light', // system, dark or light
-  siteUrl: 'https://www.transformer-near.com/',
+  siteUrl: 'https://transformer-near.com/',
   siteLogo: '/transformer.png',
   socialBanner: '/transformer.png',
   mastodon: 'https://mastodon.social/@mastodonuser',
