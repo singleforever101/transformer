@@ -1,7 +1,7 @@
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
   title: 'Transformer',
-  author: 'Tails Azimuth',
+  author: 'Transformer',
   headerTitle: 'Transformer',
   description: 'let $TRMR show you the way',
   language: 'en-us',
