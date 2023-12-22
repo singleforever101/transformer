@@ -5,7 +5,7 @@ const siteMetadata = {
   headerTitle: 'Transformer',
   description: 'let $TRMR show you the way',
   language: 'en-us',
-  theme: 'system', // system, dark or light
+  theme: 'light', // system, dark or light
   siteUrl: 'https://www.transformer-near.com/',
   siteLogo: '/transformer.png',
   socialBanner: '/transformer.png',
