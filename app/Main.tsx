@@ -175,7 +175,7 @@ function HowToBuy() {
           <Image src={money} height={100} width={100} alt="money"></Image>
 
           <div className="flex flex-col">
-            <div className="text-4xl font-black">Switch USDC for $PEPE</div>
+            <div className="text-4xl font-black">Switch USDT for $PEPE</div>
             <div className="max-w-2xl pt-10 leading-10 ">
               switch USDC for $TRMR. We have ZERO taxes so you don’t need to worry about buying with
               a specific slippage, although you may need to use slippage during times of market
