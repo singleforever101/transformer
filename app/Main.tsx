@@ -200,7 +200,7 @@ function Tokenomics() {
         <div className="flex w-full items-center">
           <div className="flex w-full flex-col items-start  gap-2">
             <div className="whitespace-nowrap text-2xl font-semibold">
-              Token Supply: 1000,000,000
+              Token Supply: 1,000,000,000
             </div>
 
             <div className="whitespace-nowrap text-2xl font-semibold">LP burn: 900,000,000</div>
