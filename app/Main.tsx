@@ -1,4 +1,5 @@
-import siteMetadata from '@/data/siteMetadata'
+'use client'
+
 import Image from 'next/image'
 
 import transformer from 'public/transformer.png'

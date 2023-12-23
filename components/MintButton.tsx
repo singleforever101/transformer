@@ -19,7 +19,6 @@ const CONTRACT_ID = 'dev-1703291878677-57597051379657'
 
 const connectionConfig = {
   networkId: 'testnet',
-  keyStore: new nearAPI.keyStores.BrowserLocalStorageKeyStore(),
   nodeUrl: 'https://rpc.testnet.near.org',
   walletUrl: 'https://testnet.mynearwallet.com/',
   helperUrl: 'https://helper.testnet.near.org',
@@ -56,8 +55,6 @@ export default function MintButton() {
       setSignedIn(state.accounts.length > 0)
 
       setSelector(selector)
-
-      setModal(modal)
 
       setModal(_modal)
     })
@@ -153,7 +150,7 @@ export default function MintButton() {
   const checkMinted = async () => {
     if (!selector) return
 
-    const accountId = accounts[0].accountId
+    const accountId = accounts?.[0]?.accountId
 
     if (!accountId) return
 
@@ -176,9 +173,13 @@ export default function MintButton() {
     setMinted(!!minted)
   }
 
-  const handleSignIn = () => modal?.show()
+  const handleSignIn = () => {
+    if (typeof window !== 'undefined' && modal) {
+      modal.show()
+    }
+  }
 
-  if (!selector) return null
+  if (!selector || typeof window === 'undefined') return null
 
   return (
     <>
