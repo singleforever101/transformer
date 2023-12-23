@@ -10,6 +10,8 @@ import Link from 'next/link'
 
 import tranformerFull from 'public/transformer-full.png'
 
+import fightdragon from 'public/fight-dragon.png'
+
 import money from 'public/money.png'
 import MintButton from '@/components/MintButton'
 
@@ -24,14 +26,19 @@ function Introduce() {
   return (
     <div
       id="home"
-      className="flex  items-center justify-between space-x-4  py-10 text-2xl leading-5"
+      className="flex  items-start justify-between space-x-4  py-10 text-2xl leading-5"
     >
       <div className="flex flex-col items-start">
         <div className="text-5xl font-extrabold italic">$TRMR</div>
 
         <div className="max-w-lg pt-10 leading-10 ">
-          the most memeable memecoin in existence. The dogs have had their day, it’s time for
-          Transformer to take reign.
+          Illia Polosukhin, the brain behind NEAR blockchain, shook up the AI scene with{' '}
+          <span className="underline">Attention Is All You Need</span> . He merged smart AI{' '}
+          <span className="font-bold">transformers</span> with blockchain, creating a buzz on NEAR.
+          But here's the twist: Inspired by Illia, $TRMR was born, the first AI memecoin on NEAR.
+          It's a blend of tech smarts and meme fun, making AI and blockchain cool and accessible.
+          $TRMR isn't just a coin; it's a cultural splash, proving tech can be fun and for everyone.
+          Props to Illia for revolutionizing AI and giving us $TRMR, the memecoin with attitude!
         </div>
 
         <div className="flex max-w-xl items-center gap-6 py-10 ">
@@ -51,7 +58,7 @@ function Introduce() {
         </Link>
       </div>
 
-      <Image src={transformer} height={350} width={350} alt="transformer"></Image>
+      <Image src={transformer} height={350} width={350} className="pt-20" alt="transformer"></Image>
     </div>
   )
 }
@@ -67,15 +74,16 @@ function About() {
       <div className="flex flex-col items-start">
         <div className="justify-self-center pl-5 text-6xl font-black ">ABOUT</div>
         <div className="max-w-xl pt-10 leading-10 ">
-          Transformer is tired of watching everyone play hot potato with the endless derivative
-          ShibaCumGMElonKishuTurboAssFlokiMoon Inu coins. The Inu’s have had their day. It’s time
-          for the most recognizable meme in the world to take his reign as king of the memes.
+          Forget those same-old dragon coins and Inu crazes. It's time for the biggest meme to rule
+          as the king of memes.
         </div>
 
         <div className="max-w-xl pt-10 leading-10 ">
-          Transformer is here to make memecoins great again. Launched stealth with no presale, zero
-          taxes, LP burnt and contract renounced, $TRMR is a coin for the people, forever. Fueled by
-          pure memetic power, let $TRMR show you the way.
+          Now, here's the kicker: Illia's big brain move led to the first AI memecoin – $TRMR.
+          Picture this: smart tech meets meme fun. $TRMR's not just a coin; it's a meme legend,
+          turning AI into a party, not just a geek fest. It's for anyone who wants to jump into
+          crypto with a grin. Big cheers to Illia for flipping AI on its head and dropping $TRMR,
+          the memecoin that's stirring up the blockchain world with a smirk
         </div>
       </div>
     </div>
@@ -177,9 +185,9 @@ function HowToBuy() {
           <Image src={money} height={100} width={100} alt="money"></Image>
 
           <div className="flex flex-col">
-            <div className="text-4xl font-black">Switch USDT for $TRMR</div>
+            <div className="text-4xl font-black">Switch NEAR for $TRMR</div>
             <div className="max-w-2xl pt-10 leading-10 ">
-              switch USDC for $TRMR. We have ZERO taxes so you don’t need to worry about buying with
+              switch NEAR for $TRMR. We have ZERO taxes so you don’t need to worry about buying with
               a specific slippage, although you may need to use slippage during times of market
               volatility.
             </div>
@@ -218,8 +226,7 @@ function Tokenomics() {
             </div>
 
             <div className="mt-10 flex w-full max-w-xl items-center justify-between gap-10 rounded-2xl border-4 border-black border-opacity-70 p-5  text-2xl text-black">
-              No Taxes, No Bullshit. It’s that simple. LP tokens are burnt, and contract ownership
-              is renounced.
+              No Taxes, No Bullshit. It’s that simple.
             </div>
           </div>
 
@@ -241,12 +248,14 @@ function RoadMap() {
 
         <div className="flex w-full flex-col items-center justify-center  gap-2">
           <div className="mt-7 flex w-full max-w-lg flex-col items-center justify-between gap-6 rounded-2xl border-4 border-black border-opacity-70 p-5  text-2xl text-black">
-            <div>Phase 1: Meme Phase</div>
-            <div>Phase 2: Vibe and HODL</div>
+            <div>Phase 1: Lauch this baby</div>
+            <div>Phase 2: Fight the dragon</div>
 
-            <div>Phase 3: Meme Takeover</div>
+            <div>Phase 3: Save NEAR galaxy from dragon</div>
           </div>
         </div>
+
+        <Image src={fightdragon} height={500} width={500} alt="fight dragon"></Image>
       </div>
     </div>
   )

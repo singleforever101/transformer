@@ -144,6 +144,7 @@ export default function MintButton() {
 
     wallet.signOut().then(() => {
       setRefresh((b) => !b)
+      setMinted(false)
     })
   }
 
@@ -190,7 +191,7 @@ export default function MintButton() {
           } flex max-w-max flex-shrink-0 items-center justify-between gap-2 rounded-2xl border border-black p-4 py-4 text-3xl  font-extrabold   hover:opacity-30`}
           onClick={!signedIn ? handleSignIn : handleMint}
         >
-          {!signedIn ? 'Sign In' : minted ? 'Minted' : 'Mint Now!'}
+          {!signedIn ? 'Sign In To Mint' : minted ? 'Minted' : 'Mint Now!'}
         </button>
 
         {signedIn && (

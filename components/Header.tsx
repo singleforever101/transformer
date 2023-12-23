@@ -32,12 +32,12 @@ const Header = () => {
             </Link>
           ))}
 
-        <Link
+        {/* <Link
           href={'https://app.ref.finance/'}
           className="flex h-6 flex-shrink-0 items-center justify-center rounded-xl border border-black p-4 font-medium   hover:opacity-30"
         >
           Buy Now
-        </Link>
+        </Link> */}
       </header>
     </div>
   )
