@@ -204,7 +204,9 @@ function Tokenomics() {
               Token Supply: 1,000,000,000
             </div>
 
-            <div className="whitespace-nowrap text-2xl font-semibold">LP burn: 900,000,000</div>
+            <div className="whitespace-nowrap text-2xl font-semibold">Free Mint: 100,000,000</div>
+
+            <div className="whitespace-nowrap text-2xl font-semibold">LP burn: 800,000,000</div>
 
             <div className="whitespace-nowrap text-2xl font-semibold">
               Team and future developer: 50,000,000
