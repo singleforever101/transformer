@@ -11,6 +11,9 @@
     "lint": "next lint --fix --dir pages --dir app --dir components --dir lib --dir layouts --dir scripts"
   },
   "dependencies": {
+    "@near-wallet-selector/core": "^8.9.1",
+    "@near-wallet-selector/modal-ui": "^8.9.1",
+    "@near-wallet-selector/my-near-wallet": "^8.9.1",
     "@next/bundle-analyzer": "14.0.3",
     "@tailwindcss/forms": "^0.5.4",
     "@tailwindcss/typography": "^0.5.9",
@@ -20,6 +23,7 @@
     "github-slugger": "^1.4.0",
     "gray-matter": "^4.0.2",
     "image-size": "1.0.0",
+    "near-api-js": "^3.0.1",
     "next": "14.0.3",
     "next-contentlayer": "0.3.4",
     "next-themes": "^0.2.1",
