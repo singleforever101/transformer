@@ -149,7 +149,9 @@ export default function MintButton() {
             type: 'FunctionCall',
             params: {
               methodName: 'storage_deposit',
-              args: {},
+              args: {
+                account_id: accountId,
+              },
               gas: '300000000000000',
               deposit: nearAPI.utils.format.parseNearAmount('0.00125') || '0',
             },
