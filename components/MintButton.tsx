@@ -15,14 +15,14 @@ import { WalletSelectorModal, setupModal } from '@near-wallet-selector/modal-ui'
 
 import * as nearAPI from 'near-api-js'
 
-const CONTRACT_ID = 'dev-1703503384975-14940300008845'
+const CONTRACT_ID = 'token.trmr-tkn.near'
 
 const connectionConfig = {
-  networkId: 'testnet',
-  nodeUrl: 'https://rpc.testnet.near.org',
-  walletUrl: 'https://testnet.mynearwallet.com/',
-  helperUrl: 'https://helper.testnet.near.org',
-  explorerUrl: 'https://explorer.testnet.near.org',
+  networkId: 'mainnet',
+  nodeUrl: 'https://rpc.mainnet.near.org',
+  walletUrl: 'https://wallet.near.org',
+  helperUrl: 'https://api.kitwallet.app',
+  explorerUrl: 'https://nearblocks.io',
 }
 
 export default function MintButton() {
@@ -47,7 +47,7 @@ export default function MintButton() {
 
   useEffect(() => {
     setupWalletSelector({
-      network: 'testnet',
+      network: 'mainnet',
       modules: [setupMyNearWallet()],
     }).then(async (selector) => {
       setSelector(selector)
@@ -238,16 +238,14 @@ export default function MintButton() {
   return (
     <>
       <div className="flex items-center justify-center gap-10">
-        {!mintedDone && (
-          <button
-            className={`${
-              minted || minting ? 'cursor-not-allowed ' : ''
-            } flex max-w-max flex-shrink-0 items-center justify-between gap-2 rounded-2xl border border-black p-4 py-4 text-3xl  font-extrabold   hover:opacity-30`}
-            onClick={!signedIn ? handleSignIn : handleMint}
-          >
-            {!signedIn ? 'Sign In To Mint' : minted ? 'Minted' : 'Mint Now!'}
-          </button>
-        )}
+        <button
+          className={`${
+            minted || minting ? 'cursor-not-allowed ' : ''
+          } flex max-w-max flex-shrink-0 items-center justify-between gap-2 rounded-2xl border border-black p-4 py-4 text-3xl  font-extrabold   hover:opacity-30`}
+          onClick={!signedIn ? handleSignIn : handleMint}
+        >
+          {!signedIn ? 'Sign In To Mint' : minted ? 'Minted' : 'Mint Now!'}
+        </button>
 
         {signedIn && (
           <button
