@@ -148,7 +148,7 @@ export default function MintButton() {
   }
 
   const handleMint = async () => {
-    if (!selector || minted) return
+    if (!selector || minted || mintedDone) return
 
     setMinting(true)
 
@@ -321,7 +321,7 @@ export default function MintButton() {
 
       {typeof yourBalance !== 'undefined' && (
         <div className="border border-none pt-10 text-center text-3xl font-semibold">
-          Your $TRMR Balance: {yourBalance} !
+          Your $TRMR Balance: {numeral(yourBalance).format('0,0')} !
         </div>
       )}
 
