@@ -288,7 +288,7 @@ export default function MintButton() {
 
       {typeof yourBalance !== 'undefined' && (
         <div className="border border-none pt-10 text-center text-3xl font-semibold">
-          Your &TRMR Balance: {yourBalance} !
+          Your $TRMR Balance: {yourBalance} !
         </div>
       )}
     </>
