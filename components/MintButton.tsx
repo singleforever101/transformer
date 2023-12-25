@@ -15,7 +15,7 @@ import { WalletSelectorModal, setupModal } from '@near-wallet-selector/modal-ui'
 
 import * as nearAPI from 'near-api-js'
 
-const CONTRACT_ID = 'dev-1703291878677-57597051379657'
+const CONTRACT_ID = 'dev-1703503384975-14940300008845'
 
 const connectionConfig = {
   networkId: 'testnet',
@@ -33,6 +33,12 @@ export default function MintButton() {
   const [signedIn, setSignedIn] = useState<boolean>(false)
 
   const [minted, setMinted] = useState<boolean>(false)
+
+  const [yourBalance, setYourBalance] = useState<string>()
+  console.log('yourBalance: ', yourBalance)
+
+  const [mintedDone, setMintedDone] = useState<boolean>(false)
+
   const [accounts, setAccounts] = useState<Array<AccountState>>([])
 
   const [minting, setMinting] = useState<boolean>(false)
@@ -65,6 +71,53 @@ export default function MintButton() {
     checkMinted()
   }, [selector, minting])
 
+  useEffect(() => {
+    if (!selector) return
+    checkMintedDone()
+  }, [minted, minting, selector])
+
+  useEffect(() => {
+    if (!selector) return
+
+    if (!accounts) return
+
+    if (!signedIn) return
+
+    checkBalance()
+  }, [selector, accounts, signedIn])
+
+  const checkBalance = async () => {
+    if (!selector) return
+
+    const accountId = accounts?.[0]?.accountId
+
+    if (!accountId) return
+
+    const { connect } = nearAPI
+
+    const nearConnection = await connect(connectionConfig)
+
+    const account = await nearConnection.account(accountId)
+
+    const balance = await account.viewFunction({
+      contractId: CONTRACT_ID,
+      methodName: 'ft_balance_of',
+      args: {
+        account_id: accountId,
+      },
+    })
+
+    const metadata = await account.viewFunction({
+      contractId: CONTRACT_ID,
+      methodName: 'ft_metadata',
+      args: {},
+    })
+
+    const readableBalance = BigInt(balance) / BigInt(10 ** metadata.decimals)
+
+    setYourBalance(readableBalance.toString())
+  }
+
   const handleMint = async () => {
     if (!selector || minted) return
 
@@ -80,36 +133,7 @@ export default function MintButton() {
 
     const account = await nearConnection.account(accountId)
 
-    const registered = await account.viewFunction({
-      contractId: CONTRACT_ID,
-      methodName: 'storage_balance_of',
-      args: {
-        account_id: accountId,
-      },
-    })
-
     const transactions: Transaction[] = []
-
-    if (!registered) {
-      transactions.push({
-        signerId: accountId,
-        receiverId: CONTRACT_ID,
-        actions: [
-          {
-            type: 'FunctionCall',
-            params: {
-              methodName: 'storage_deposit',
-              args: {
-                account_id: accountId,
-                registration_only: true,
-              },
-              gas: '300000000000000',
-              deposit: nearAPI.utils.format.parseNearAmount('0.002') || '1',
-            },
-          },
-        ],
-      })
-    }
 
     transactions.push({
       signerId: accountId,
@@ -118,10 +142,10 @@ export default function MintButton() {
         {
           type: 'FunctionCall',
           params: {
-            methodName: 'mint',
+            methodName: 'mint_ft',
             args: {},
             gas: '300000000000000',
-            deposit: '1',
+            deposit: '0',
           },
         },
       ],
@@ -145,6 +169,9 @@ export default function MintButton() {
     wallet.signOut().then(() => {
       setRefresh((b) => !b)
       setMinted(false)
+      setMinting(false)
+      setMintedDone(false)
+      setYourBalance(undefined)
     })
   }
 
@@ -174,6 +201,32 @@ export default function MintButton() {
     setMinted(!!minted)
   }
 
+  const checkMintedDone = async () => {
+    if (!selector) return
+
+    const accountId = accounts?.[0]?.accountId
+
+    if (!accountId) return
+
+    // check if one account is minted
+
+    const { connect } = nearAPI
+
+    const nearConnection = await connect(connectionConfig)
+
+    const account = await nearConnection.account(accountId)
+
+    const mintedDone = await account.viewFunction({
+      contractId: CONTRACT_ID,
+      methodName: 'mint_done',
+      args: {},
+    })
+
+    console.log('mintedDone: ', mintedDone)
+
+    setMintedDone(mintedDone)
+  }
+
   const handleSignIn = () => {
     if (typeof window !== 'undefined' && modal) {
       modal.show()
@@ -185,14 +238,16 @@ export default function MintButton() {
   return (
     <>
       <div className="flex items-center justify-center gap-10">
-        <button
-          className={`${
-            minted || minting ? 'cursor-not-allowed ' : ''
-          } flex max-w-max flex-shrink-0 items-center justify-between gap-2 rounded-2xl border border-black p-4 py-4 text-3xl  font-extrabold   hover:opacity-30`}
-          onClick={!signedIn ? handleSignIn : handleMint}
-        >
-          {!signedIn ? 'Sign In To Mint' : minted ? 'Minted' : 'Mint Now!'}
-        </button>
+        {!mintedDone && (
+          <button
+            className={`${
+              minted || minting ? 'cursor-not-allowed ' : ''
+            } flex max-w-max flex-shrink-0 items-center justify-between gap-2 rounded-2xl border border-black p-4 py-4 text-3xl  font-extrabold   hover:opacity-30`}
+            onClick={!signedIn ? handleSignIn : handleMint}
+          >
+            {!signedIn ? 'Sign In To Mint' : minted ? 'Minted' : 'Mint Now!'}
+          </button>
+        )}
 
         {signedIn && (
           <button
@@ -203,6 +258,18 @@ export default function MintButton() {
           </button>
         )}
       </div>
+
+      {mintedDone && (
+        <div className="border border-none pt-10 text-center text-3xl font-semibold">
+          The total mintable amount has been reached!
+        </div>
+      )}
+
+      {typeof yourBalance !== 'undefined' && (
+        <div className="border border-none pt-10 text-center text-3xl font-semibold">
+          Your &TRMR Balance: {yourBalance} !
+        </div>
+      )}
     </>
   )
 }
