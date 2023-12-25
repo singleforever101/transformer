@@ -327,8 +327,7 @@ export default function MintButton() {
 
       {typeof mintedAmount === 'string' && (
         <div className="border border-none pt-10 text-center text-3xl font-semibold">
-          Mined / Total Mintable: {numeral(mintedAmount).format('0,0')} /{' '}
-          {numeral(mintableAmount).format('0,0')}
+          Minted: {numeral(mintedAmount).format('0,0')} / {numeral(mintableAmount).format('0,0')}
         </div>
       )}
     </>
