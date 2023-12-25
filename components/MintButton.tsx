@@ -35,7 +35,6 @@ export default function MintButton() {
   const [minted, setMinted] = useState<boolean>(false)
 
   const [yourBalance, setYourBalance] = useState<string>()
-  console.log('yourBalance: ', yourBalance)
 
   const [mintedDone, setMintedDone] = useState<boolean>(false)
 
@@ -135,6 +134,30 @@ export default function MintButton() {
 
     const transactions: Transaction[] = []
 
+    const registerStorageDeposit = await account.viewFunction({
+      contractId: CONTRACT_ID,
+      methodName: 'storage_balance_of',
+      args: {},
+    })
+
+    if (!registerStorageDeposit) {
+      transactions.push({
+        signerId: accountId,
+        receiverId: CONTRACT_ID,
+        actions: [
+          {
+            type: 'FunctionCall',
+            params: {
+              methodName: 'storage_deposit',
+              args: {},
+              gas: '300000000000000',
+              deposit: nearAPI.utils.format.parseNearAmount('0.00125') || '0',
+            },
+          },
+        ],
+      })
+    }
+
     transactions.push({
       signerId: accountId,
       receiverId: CONTRACT_ID,
@@ -221,8 +244,6 @@ export default function MintButton() {
       methodName: 'mint_done',
       args: {},
     })
-
-    console.log('mintedDone: ', mintedDone)
 
     setMintedDone(mintedDone)
   }
