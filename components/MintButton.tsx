@@ -4,6 +4,8 @@ import '@near-wallet-selector/modal-ui/styles.css'
 
 import { setupMyNearWallet } from '@near-wallet-selector/my-near-wallet'
 
+import numeral from 'numeral'
+
 import {
   AccountState,
   Transaction,
@@ -43,6 +45,8 @@ export default function MintButton() {
   const [minting, setMinting] = useState<boolean>(false)
 
   const [refresh, setRefresh] = useState<boolean>(false)
+
+  const [mintedAmount, setMintedAmount] = useState<string>()
 
   useEffect(() => {
     setupWalletSelector({
@@ -84,6 +88,32 @@ export default function MintButton() {
 
     checkBalance()
   }, [selector, accounts, signedIn])
+
+  const mintableAmount = '100000000'
+
+  useEffect(() => {
+    checkMintedAmount()
+  }, [])
+
+  const checkMintedAmount = async () => {
+    // check if one account is minted
+
+    const { connect } = nearAPI
+
+    const nearConnection = await connect(connectionConfig)
+
+    const account = await nearConnection.account(CONTRACT_ID)
+
+    const totalSupply = await account.viewFunction({
+      contractId: CONTRACT_ID,
+      methodName: 'ft_total_supply',
+      args: {},
+    })
+
+    const readableMintedAmount = BigInt(totalSupply) / BigInt(10 ** 18) - BigInt(900000000)
+
+    setMintedAmount(readableMintedAmount.toString())
+  }
 
   const checkBalance = async () => {
     if (!selector) return
@@ -292,6 +322,13 @@ export default function MintButton() {
       {typeof yourBalance !== 'undefined' && (
         <div className="border border-none pt-10 text-center text-3xl font-semibold">
           Your $TRMR Balance: {yourBalance} !
+        </div>
+      )}
+
+      {typeof mintedAmount === 'string' && (
+        <div className="border border-none pt-10 text-center text-3xl font-semibold">
+          Mined / Total Mintable: {numeral(mintedAmount).format('0,0')} /{' '}
+          {numeral(mintableAmount).format('0,0')}
         </div>
       )}
     </>

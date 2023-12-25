@@ -175,7 +175,7 @@ function HowToBuy() {
           <div className="flex flex-col">
             <div className="text-4xl font-black">Go to Ref Finance</div>
             <div className="max-w-2xl pt-10 leading-10 ">
-              connect to Ref Finance. Go to https://app.ref.finance/ and connect your wallet. Paste
+              Connect to Ref Finance. Go to https://app.ref.finance/ and connect your wallet. Paste
               and add the $TRMR token address into Ref Finance, select TRMR, and confirm.
             </div>
           </div>
@@ -187,7 +187,7 @@ function HowToBuy() {
           <div className="flex flex-col">
             <div className="text-4xl font-black">Switch NEAR for $TRMR</div>
             <div className="max-w-2xl pt-10 leading-10 ">
-              switch NEAR for $TRMR. We have ZERO taxes so you don’t need to worry about buying with
+              Switch NEAR for $TRMR. We have ZERO taxes so you don’t need to worry about buying with
               a specific slippage, although you may need to use slippage during times of market
               volatility.
             </div>
@@ -215,14 +215,14 @@ function Tokenomics() {
 
             <div className="whitespace-nowrap text-2xl font-semibold">Free Mint: 100,000,000</div>
 
-            <div className="whitespace-nowrap text-2xl font-semibold">LP burn: 800,000,000</div>
+            <div className="whitespace-nowrap text-2xl font-semibold">LP Burn: 800,000,000</div>
 
             <div className="whitespace-nowrap text-2xl font-semibold">
-              Team and future developer: 50,000,000
+              Team And Future Developer: 50,000,000
             </div>
 
             <div className="whitespace-nowrap text-2xl font-semibold">
-              Incentive for exchange: 50,000,000
+              Incentive For Exchange: 50,000,000
             </div>
 
             <div className="mt-10 flex w-full max-w-xl items-center justify-between gap-10 rounded-2xl border-4 border-black border-opacity-70 p-5  text-2xl text-black">
