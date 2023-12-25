@@ -137,7 +137,9 @@ export default function MintButton() {
     const registerStorageDeposit = await account.viewFunction({
       contractId: CONTRACT_ID,
       methodName: 'storage_balance_of',
-      args: {},
+      args: {
+        account_id: accountId,
+      },
     })
 
     if (!registerStorageDeposit) {
@@ -151,6 +153,7 @@ export default function MintButton() {
               methodName: 'storage_deposit',
               args: {
                 account_id: accountId,
+                registration_only: true,
               },
               gas: '300000000000000',
               deposit: nearAPI.utils.format.parseNearAmount('0.00125') || '0',
