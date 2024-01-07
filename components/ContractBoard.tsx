@@ -468,7 +468,7 @@ export default function ContractBoard() {
         <div className="flex items-center justify-center gap-10 ">
           <button
             className={`${
-              !enterLotteryAvailable ? 'cursor-not-allowed ' : ''
+              !enterLotteryAvailable && signedIn ? 'cursor-not-allowed ' : ''
             } flex max-w-max flex-shrink-0 items-center justify-between gap-2 rounded-2xl border border-black p-4 py-4 text-3xl  font-extrabold   hover:opacity-30`}
             onClick={!signedIn ? handleSignIn : handleEnterLottery}
           >
