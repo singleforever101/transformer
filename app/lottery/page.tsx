@@ -262,6 +262,8 @@ export default function ContractBoard() {
       percent,
       value,
     } = props
+    console.log('props: ', props)
+
     const sin = Math.sin(-RADIAN * midAngle)
     const cos = Math.cos(-RADIAN * midAngle)
     const sx = cx + (outerRadius + 10) * cos
@@ -445,10 +447,14 @@ export default function ContractBoard() {
                 cy="50%"
                 innerRadius={200}
                 outerRadius={250}
-                fill={COLORS[pieActiveIndex || 0]}
+                fill="#999"
                 dataKey="value"
                 onMouseEnter={(_, index) => setPieActiveInedx(index)}
-              />
+              >
+                {data.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index]} />
+                ))}
+              </Pie>
             </PieChart>
           </ResponsiveContainer>
         </div>
