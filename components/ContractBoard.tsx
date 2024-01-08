@@ -423,95 +423,44 @@ export default function ContractBoard() {
   if (!selector || typeof window === 'undefined') return null
 
   return (
-    <div className="flex  justify-between pt-10">
-      <div className="">
-        <div className="flex items-center justify-center gap-10">
+    <div className="flex  flex-col items-center  pt-10">
+      <div className="flex items-center justify-center gap-10">
+        <button
+          className={`${
+            minted || minting ? 'cursor-not-allowed ' : ''
+          } flex max-w-max flex-shrink-0 items-center justify-between gap-2 rounded-2xl border border-black p-4 py-4 text-3xl  font-extrabold   hover:opacity-30`}
+          onClick={!signedIn ? handleSignIn : handleMint}
+        >
+          {!signedIn ? 'Sign In To Mint' : minted ? 'Minted' : 'Mint Now!'}
+        </button>
+
+        {signedIn && (
           <button
-            className={`${
-              minted || minting ? 'cursor-not-allowed ' : ''
-            } flex max-w-max flex-shrink-0 items-center justify-between gap-2 rounded-2xl border border-black p-4 py-4 text-3xl  font-extrabold   hover:opacity-30`}
-            onClick={!signedIn ? handleSignIn : handleMint}
+            className="flex max-w-max flex-shrink-0 items-center justify-between gap-2 rounded-2xl border border-black p-4 py-4 text-3xl font-semibold   hover:opacity-30"
+            onClick={handleSignOut}
           >
-            {!signedIn ? 'Sign In To Mint' : minted ? 'Minted' : 'Mint Now!'}
+            Sign Out
           </button>
-
-          {signedIn && (
-            <button
-              className="flex max-w-max flex-shrink-0 items-center justify-between gap-2 rounded-2xl border border-black p-4 py-4 text-3xl font-semibold   hover:opacity-30"
-              onClick={handleSignOut}
-            >
-              Sign Out
-            </button>
-          )}
-        </div>
-
-        {mintedDone && (
-          <div className="border border-none pt-10 text-center text-3xl font-semibold">
-            The total mintable amount has been reached!
-          </div>
-        )}
-
-        {typeof yourBalance !== 'undefined' && (
-          <div className="border border-none pt-10 text-center text-3xl font-semibold">
-            Your $TRMR Balance: {numeral(yourBalance).format('0,0')} !
-          </div>
-        )}
-
-        {typeof mintedAmount === 'string' && (
-          <div className="border border-none pt-10 text-center text-3xl font-semibold">
-            Minted: {numeral(mintedAmount).format('0,0')} / {numeral(mintableAmount).format('0,0')}
-          </div>
         )}
       </div>
 
-      <div className="flex flex-col  items-center">
-        <div className="flex items-center justify-center gap-10 ">
-          <button
-            className={`${
-              !enterLotteryAvailable && signedIn ? 'cursor-not-allowed ' : ''
-            } flex max-w-max flex-shrink-0 items-center justify-between gap-2 rounded-2xl border border-black p-4 py-4 text-3xl  font-extrabold   hover:opacity-30`}
-            onClick={!signedIn ? handleSignIn : handleEnterLottery}
-          >
-            {!signedIn ? 'Sign In To Enter Lottery' : 'Enter Lottery'}
-          </button>
+      {mintedDone && (
+        <div className="border border-none pt-10 text-center text-3xl font-semibold">
+          The total mintable amount has been reached!
         </div>
+      )}
 
-        <div className="flex w-full  flex-col items-center gap-5 pt-6">
-          {typeof nearBalance === 'string' && (
-            <div className="text-md justify-end  border border-none text-center font-normal">
-              Your Near Balance: {nearBalance}
-            </div>
-          )}
-          <input
-            className=" w-full max-w-[500px]  rounded-2xl border border-black p-4 text-2xl  font-extrabold placeholder:text-sm placeholder:font-normal"
-            placeholder="The minimum NEAR to enter lottery is 0.1 NEAR"
-            type="text"
-            value={enterSize || ''}
-            onChange={(e) => {
-              const targetValue = e.target.value
-              if (targetValue !== '' && !targetValue.match(/^\d*(\.\d*)?$/)) {
-                return
-              }
-              const amountIn = targetValue.replace(/^0+/, '0') // remove prefix
-
-              setEnterSize(amountIn)
-            }}
-          />
+      {typeof yourBalance !== 'undefined' && (
+        <div className="border border-none pt-10 text-center text-3xl font-semibold">
+          Your $TRMR Balance: {numeral(yourBalance).format('0,0')} !
         </div>
+      )}
 
-        {typeof lotteryRound === 'string' && (
-          <div className="border border-none pt-10 text-center text-3xl font-semibold">
-            Current Lottery Round: {lotteryRound}{' '}
-            {signedIn ? `(${entered ? 'Entered' : 'Not Entered'})` : ''}
-          </div>
-        )}
-
-        {typeof poolSize === 'string' && (
-          <div className="border border-none pt-10 text-center text-3xl font-semibold">
-            Current Round Prize Size: {Big(poolSize).times(0.95).toFixed()} $NEAR
-          </div>
-        )}
-      </div>
+      {typeof mintedAmount === 'string' && (
+        <div className="border border-none pt-10 text-center text-3xl font-semibold">
+          Minted: {numeral(mintedAmount).format('0,0')} / {numeral(mintableAmount).format('0,0')}
+        </div>
+      )}
     </div>
   )
 }
