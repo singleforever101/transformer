@@ -337,20 +337,6 @@ export default function ContractBoard() {
   return (
     <div className="pt-40">
       <div className="flex  gap-20">
-        <div>
-          {typeof lotteryRound === 'string' && (
-            <div className="border border-none pt-10 text-center text-3xl font-semibold">
-              Current Lottery Round: {lotteryRound}{' '}
-              {signedIn ? `(${entered ? 'Entered' : 'Not Entered'})` : ''}
-            </div>
-          )}
-
-          {typeof poolSize === 'string' && (
-            <div className="whitespace-nowrap border border-none pt-10 text-center text-3xl font-semibold">
-              Current Round Prize Size: {Big(poolSize).times(0.95).toFixed()} $NEAR
-            </div>
-          )}
-        </div>
         <div className="flex flex-col items-center ">
           <div className="flex w-full  flex-col items-center gap-5 pt-6">
             {typeof nearBalance === 'string' && (
@@ -393,6 +379,20 @@ export default function ContractBoard() {
               </button>
             )}
           </div>
+        </div>
+        <div>
+          {typeof lotteryRound === 'string' && (
+            <div className="border border-none pt-10 text-center text-3xl font-semibold">
+              Current Lottery Round: {lotteryRound}{' '}
+              {signedIn ? `(${entered ? 'Already Entered' : 'Not Entered'})` : ''}
+            </div>
+          )}
+
+          {typeof poolSize === 'string' && (
+            <div className="whitespace-nowrap border border-none pt-10 text-center text-3xl font-semibold">
+              Current Round Prize Size: {Big(poolSize).times(0.95).toFixed()} $NEAR
+            </div>
+          )}
         </div>
       </div>
 
