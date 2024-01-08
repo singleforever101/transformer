@@ -6,6 +6,8 @@ import transformer from 'public/transformer.png'
 
 import twitter from 'public/twitter.png'
 
+import telegram from 'public/tele.png'
+
 import Link from 'next/link'
 
 import tranformerFull from 'public/transformer-full.png'
@@ -44,6 +46,10 @@ function Introduce() {
         <div className="flex max-w-xl items-center gap-6 py-10 ">
           <Link href={'https://twitter.com/trmr_near'} target="_blank">
             <Image src={twitter} width={50} height={50} alt="twitter"></Image>
+          </Link>
+
+          <Link href={'https://t.me/+Nsp0vGG01etiZDJh'} target="_blank">
+            <Image src={telegram} width={50} height={50} alt="teleram"></Image>
           </Link>
         </div>
 
@@ -276,6 +282,10 @@ function Contact() {
         <div className="flex items-center gap-10">
           <Link href={'https://twitter.com/trmr_near'} target="_blank">
             <Image src={twitter} height={60} width={60} alt="twitter"></Image>
+          </Link>
+
+          <Link href={'https://t.me/+Nsp0vGG01etiZDJh'} target="_blank">
+            <Image src={telegram} width={60} height={60} alt="teleram"></Image>
           </Link>
         </div>
 
