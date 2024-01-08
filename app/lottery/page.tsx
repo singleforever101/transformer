@@ -389,7 +389,7 @@ export default function ContractBoard() {
                     src={NEAR_ICON}
                   />
 
-                  {nearBalance}
+                  {Big(nearBalance).toFixed(6)}
                 </div>
               )}
               {signedIn && (
@@ -397,8 +397,8 @@ export default function ContractBoard() {
                   className=" w-full max-w-[500px]  rounded-2xl border border-black p-4 text-2xl  font-extrabold placeholder:text-sm placeholder:font-normal"
                   placeholder={
                     entered
-                      ? 'You already entered this round'
-                      : 'The minimum NEAR to enter lottery is 0.1 NEAR'
+                      ? 'You have already entered this round'
+                      : 'The minimum amount to enter lottery is 0.1 NEAR'
                   }
                   type="text"
                   disabled={!signedIn || entered}
@@ -460,7 +460,7 @@ export default function ContractBoard() {
                       {players && formateAccount(players[index])}
                     </td>
                     <td className="items-center gap-2 p-2 text-2xl font-semibold">
-                      {Big(bet).div(Big(10).pow(24)).toFixed()} NEAR
+                      {Big(bet).div(Big(10).pow(24)).toFixed()}
                       <img
                         width={24}
                         height={24}
