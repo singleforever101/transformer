@@ -6,6 +6,10 @@ import { setupMyNearWallet } from '@near-wallet-selector/my-near-wallet'
 
 import Big from 'big.js'
 
+import lottery from '/public/lottery.jpg'
+
+import Image from 'next/image'
+
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer, Tooltip } from 'recharts'
 
 import {
@@ -67,6 +71,18 @@ export default function ContractBoard() {
   const [pieActiveIndex, setPieActiveInedx] = useState<number>(0)
 
   const [nearBalance, setNearBalance] = useState<string>()
+
+  useEffect(() => {
+    const el = document.getElementsByClassName('body_tag')?.[0]
+    if (el) {
+      el.classList.add('lotteryBg')
+    }
+    return () => {
+      if (el) {
+        el.classList.remove('lotteryBg')
+      }
+    }
+  }, [])
 
   useEffect(() => {
     setupWalletSelector({
@@ -320,7 +336,7 @@ export default function ContractBoard() {
           y={ey + 20}
           dy={18}
           textAnchor={textAnchor}
-          fill="#999"
+          fill="#000"
         >
           {payload.name}
         </text>
@@ -328,9 +344,9 @@ export default function ContractBoard() {
           x={ex + (cos >= 0 ? 1 : -1) * 12}
           y={ey}
           textAnchor={textAnchor}
-          fill="#333"
+          fill="#000"
         >{`${value} NEAR`}</text>
-        <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
+        <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#000">
           {`${(percent * 100).toFixed(2)}%`}
         </text>
       </g>
@@ -340,15 +356,23 @@ export default function ContractBoard() {
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042']
 
   return (
-    <div className=" grid grid-cols-4 gap-24 pt-40">
-      <div className=" relative col-span-2 flex w-[600px] flex-col items-center rounded-xl border-2 border-black shadow-lg">
+    <div className="  relative grid grid-cols-4 gap-24 pt-40">
+      <Image
+        src={lottery}
+        className="fixed left-10 top-36"
+        height={300}
+        width={200}
+        alt="lottery"
+      />
+
+      <div className=" relative col-span-2 flex w-[600px] flex-col items-center rounded-xl border-2 border-black  bg-gray-400 bg-opacity-70 shadow-lg">
         {typeof lotteryRound === 'string' && (
           <div className="absolute left-4 top-4 border border-none  text-center text-3xl font-semibold">
             Round {lotteryRound}{' '}
           </div>
         )}
 
-        <div className="h-[650px] w-[600px] py-10">
+        <div className="relative h-[650px] w-[600px]  py-10">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart className="border-none outline-none active:outline-none">
               <Pie
@@ -357,7 +381,7 @@ export default function ContractBoard() {
                 data={data}
                 cx="50%"
                 cy="50%"
-                innerRadius={200}
+                innerRadius={150}
                 outerRadius={250}
                 fill="#999"
                 dataKey="value"
@@ -371,8 +395,8 @@ export default function ContractBoard() {
           </ResponsiveContainer>
         </div>
       </div>
-      <div className=" col-span-2 flex flex-col gap-6 ">
-        <div className="flex min-h-[280px] gap-20 rounded-xl border-2 border-black p-4 px-8">
+      <div className=" col-span-2 flex flex-col gap-6  ">
+        <div className="flex min-h-[280px] gap-20 rounded-xl border-2 border-black bg-gray-400 bg-opacity-70 p-4 px-8">
           <div className="flex w-full flex-col ">
             <div className="flex w-full  flex-col  gap-5 ">
               {typeof nearBalance === 'string' && (
@@ -393,7 +417,7 @@ export default function ContractBoard() {
               )}
               {signedIn && (
                 <input
-                  className=" w-full max-w-[500px]  rounded-2xl border border-black p-4 text-2xl  font-extrabold placeholder:text-sm placeholder:font-normal"
+                  className=" w-full max-w-[500px] rounded-2xl  border border-gray-600 bg-gray-100 p-4 text-2xl  font-extrabold placeholder:text-sm placeholder:font-normal"
                   placeholder={
                     entered
                       ? 'You have already entered this round'
@@ -435,7 +459,7 @@ export default function ContractBoard() {
             </div>
           </div>
         </div>
-        <div className="rounded-xl border-2 border-black p-4 pb-2">
+        <div className="rounded-xl border-2 border-black bg-gray-400 bg-opacity-70 p-4 pb-2">
           <table className="max-h-max w-full min-w-[450px] rounded-2xl ">
             <thead>
               <tr className="rounded-tr-2xl">

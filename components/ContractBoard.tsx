@@ -6,8 +6,6 @@ import { setupMyNearWallet } from '@near-wallet-selector/my-near-wallet'
 
 import numeral from 'numeral'
 
-import Big from 'big.js'
-
 import {
   AccountState,
   Transaction,
