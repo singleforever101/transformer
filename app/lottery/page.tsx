@@ -264,7 +264,6 @@ export default function ContractBoard() {
       percent,
       value,
     } = props
-    console.log('props: ', props)
 
     const sin = Math.sin(-RADIAN * midAngle)
     const cos = Math.cos(-RADIAN * midAngle)
