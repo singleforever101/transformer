@@ -359,14 +359,6 @@ export default function ContractBoard() {
 
   return (
     <div className="  relative grid grid-cols-4 gap-24 pt-40">
-      <Image
-        src={lottery}
-        className="fixed left-10 top-36"
-        height={300}
-        width={200}
-        alt="lottery"
-      />
-
       <div className=" relative col-span-2 flex w-[600px] flex-col items-center rounded-xl border-2 border-black  bg-gray-400 bg-opacity-70 shadow-lg">
         {typeof lotteryRound === 'string' && (
           <div className="absolute left-4 top-4 border border-none  text-center text-3xl font-semibold">
