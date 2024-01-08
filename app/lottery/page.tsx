@@ -181,11 +181,11 @@ export default function ContractBoard() {
 
   const enterLotteryAvailable =
     !!signedIn &&
-    typeof yourBalance !== 'undefined' &&
+    typeof nearBalance !== 'undefined' &&
     typeof enterSize === 'string' &&
     !!enterSize &&
-    !!yourBalance &&
-    Number(enterSize) <= Number(yourBalance) &&
+    !!nearBalance &&
+    Number(enterSize) <= Number(nearBalance) &&
     Number(enterSize) >= 0.1 &&
     !entered
 
