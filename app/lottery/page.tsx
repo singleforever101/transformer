@@ -292,7 +292,7 @@ export default function ContractBoard() {
     const textAnchor = cos >= 0 ? 'start' : 'end'
 
     return (
-      <g className="border-none outline-none focus:outline-none">
+      <g className="border-none outline-none focus:outline-none" stroke="none">
         <text
           x={cx}
           y={cy - 35}
@@ -319,6 +319,7 @@ export default function ContractBoard() {
           startAngle={startAngle}
           endAngle={endAngle}
           fill={fill}
+          stroke="none"
         />
         <Sector
           cx={cx}
@@ -328,6 +329,7 @@ export default function ContractBoard() {
           innerRadius={outerRadius + 6}
           outerRadius={outerRadius + 10}
           fill={fill}
+          stroke="none"
         />
         <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" />
         <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
@@ -385,6 +387,7 @@ export default function ContractBoard() {
                 outerRadius={250}
                 fill="#999"
                 dataKey="value"
+                paddingAngle={2}
                 onMouseEnter={(_, index) => setPieActiveInedx(index)}
               >
                 {data.map((entry, index) => (
