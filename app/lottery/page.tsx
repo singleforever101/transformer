@@ -348,8 +348,13 @@ export default function ContractBoard() {
             )}
             <input
               className=" w-full max-w-[500px]  rounded-2xl border border-black p-4 text-2xl  font-extrabold placeholder:text-sm placeholder:font-normal"
-              placeholder="The minimum NEAR to enter lottery is 0.1 NEAR"
+              placeholder={
+                entered
+                  ? 'You already entered this round'
+                  : 'The minimum NEAR to enter lottery is 0.1 NEAR'
+              }
               type="text"
+              disabled={!signedIn || entered}
               value={enterSize || ''}
               onChange={(e) => {
                 const targetValue = e.target.value
