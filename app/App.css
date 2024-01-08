@@ -4,5 +4,5 @@
 
 .lotteryBg {
   min-height: 100vh;
-  background-color: rgb(10, 10, 10);
+  background-color: rgb(10, 10, 10) !important;
 }
