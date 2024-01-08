@@ -73,7 +73,7 @@ export default function ContractBoard() {
   const [nearBalance, setNearBalance] = useState<string>()
 
   useEffect(() => {
-    const el = document.getElementsByClassName('body_tag')?.[0]
+    const el = document.body
     if (el) {
       el.classList.add('lotteryBg')
     }
