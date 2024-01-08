@@ -19,6 +19,7 @@ import { WalletSelectorModal, setupModal } from '@near-wallet-selector/modal-ui'
 
 import * as nearAPI from 'near-api-js'
 import usePolling from 'app/hooks'
+import { NEAR_ICON } from 'app/constants'
 
 const CONTRACT_ID = 'token.trmr-tkn.near'
 
@@ -32,7 +33,11 @@ const connectionConfig = {
   explorerUrl: 'https://nearblocks.io',
 }
 
-const formteAccount = (accountId: string) => {
+const formateAccount = (accountId: string) => {
+  if (accountId.endsWith('.near')) {
+    return accountId
+  }
+
   return `${accountId.slice(0, 4)}...${accountId.slice(-4)}`
 }
 
@@ -42,8 +47,6 @@ export default function ContractBoard() {
   const [modal, setModal] = useState<WalletSelectorModal>()
 
   const [signedIn, setSignedIn] = useState<boolean>(false)
-
-  const [yourBalance, setYourBalance] = useState<string>()
 
   const [players, setPlayers] = useState<string[]>()
 
@@ -227,7 +230,6 @@ export default function ContractBoard() {
 
     wallet.signOut().then(() => {
       setRefresh((b) => !b)
-      setYourBalance(undefined)
       setNearBalance(undefined)
     })
   }
@@ -242,7 +244,7 @@ export default function ContractBoard() {
 
   const data = (bets || []).map((bet, index) => {
     return {
-      name: formteAccount(players?.[index] || ''),
+      name: formateAccount(players?.[index] || ''),
       value: parseFloat(new Big(bet).div(Big(10).pow(24)).toFixed(2)),
     }
   })
@@ -292,7 +294,7 @@ export default function ContractBoard() {
           {Big(poolSize || 0)
             .times(0.95)
             .toFixed()}{' '}
-          $NEAR
+          NEAR
         </text>
         <Sector
           cx={cx}
@@ -339,104 +341,15 @@ export default function ContractBoard() {
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042']
 
   return (
-    <div className="pt-40">
-      <div className="flex  gap-20">
-        <div className="flex flex-col items-center ">
-          <div className="flex w-full  flex-col items-center gap-5 pt-6">
-            {typeof nearBalance === 'string' && (
-              <div className="text-md justify-end  border border-none text-center font-normal">
-                Your Near Balance: {nearBalance}
-              </div>
-            )}
-            <input
-              className=" w-full max-w-[500px]  rounded-2xl border border-black p-4 text-2xl  font-extrabold placeholder:text-sm placeholder:font-normal"
-              placeholder={
-                entered
-                  ? 'You already entered this round'
-                  : 'The minimum NEAR to enter lottery is 0.1 NEAR'
-              }
-              type="text"
-              disabled={!signedIn || entered}
-              value={enterSize || ''}
-              onChange={(e) => {
-                const targetValue = e.target.value
-                if (targetValue !== '' && !targetValue.match(/^\d*(\.\d*)?$/)) {
-                  return
-                }
-                const amountIn = targetValue.replace(/^0+/, '0') // remove prefix
-
-                setEnterSize(amountIn)
-              }}
-            />
+    <div className=" grid grid-cols-4 gap-24 pt-40">
+      <div className=" relative col-span-2 flex w-[600px] flex-col items-center rounded-2xl border-2 border-black shadow-lg">
+        {typeof lotteryRound === 'string' && (
+          <div className="absolute left-4 top-4 border border-none  text-center text-3xl font-semibold">
+            Round {lotteryRound}{' '}
           </div>
-          <div className="flex items-center justify-center gap-10 pt-6 ">
-            <button
-              className={`${
-                !enterLotteryAvailable && signedIn ? 'cursor-not-allowed ' : ''
-              } flex max-w-max flex-shrink-0 items-center justify-between gap-2 rounded-2xl border border-black p-4 py-4 text-3xl  font-extrabold   hover:opacity-30`}
-              onClick={!signedIn ? handleSignIn : handleEnterLottery}
-            >
-              {!signedIn ? 'Sign In To Enter Lottery' : 'Enter Lottery'}
-            </button>
+        )}
 
-            {signedIn && (
-              <button
-                className={`flex max-w-max flex-shrink-0 items-center justify-between gap-2 rounded-2xl border border-black p-4 py-4 text-3xl  font-extrabold   hover:opacity-30`}
-                onClick={handleSignOut}
-              >
-                {'Sign Out'}
-              </button>
-            )}
-          </div>
-        </div>
-        <div>
-          {typeof lotteryRound === 'string' && (
-            <div className="border border-none pt-10 text-center text-3xl font-semibold">
-              Current Lottery Round: {lotteryRound}{' '}
-              {signedIn ? `(${entered ? 'Already Entered' : 'Not Entered'})` : ''}
-            </div>
-          )}
-
-          {typeof poolSize === 'string' && (
-            <div className="whitespace-nowrap border border-none pt-10 text-center text-3xl font-semibold">
-              Current Round Prize Size: {Big(poolSize).times(0.95).toFixed()} $NEAR
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className="flex flex-col justify-center gap-20 pt-20">
-        <table className="max-h-max min-w-[400px] rounded-2xl border-2 border-black">
-          <thead>
-            <tr className="rounded-tr-2xl border-b border-black bg-black bg-opacity-5">
-              <th className="p-2 text-left text-2xl font-semibold">Account Id</th>
-              <th className="p-2 text-left text-2xl font-semibold">Bet Amount</th>
-              <th className="p-2 text-left text-2xl font-semibold">Share</th>
-            </tr>
-          </thead>
-          <tbody>
-            {bets &&
-              bets.map((bet, index) => (
-                <tr className="border-b border-black" key={index}>
-                  <td className="p-2 text-2xl font-semibold">
-                    {players && formteAccount(players[index])}
-                  </td>
-                  <td className="p-2 text-2xl font-semibold ">
-                    {Big(bet).div(Big(10).pow(24)).toFixed()} NEAR
-                  </td>
-                  <td className="whitespace-nowrap p-2 text-2xl font-semibold">
-                    {typeof poolSize === 'string' && (
-                      <div>
-                        {Big(bet).div(Big(poolSize)).div(Big(10).pow(24)).times(100).toFixed(2)} %
-                      </div>
-                    )}
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-
-        <div className="h-[600px] w-full">
+        <div className="h-[650px] w-[600px] py-10">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart className="border-none outline-none active:outline-none">
               <Pie
@@ -457,6 +370,115 @@ export default function ContractBoard() {
               </Pie>
             </PieChart>
           </ResponsiveContainer>
+        </div>
+      </div>
+      <div className=" col-span-2 flex flex-col gap-6 ">
+        <div className="flex min-h-[280px] gap-20 rounded-2xl border-2 border-black p-4 px-8">
+          <div className="flex w-full flex-col ">
+            <div className="flex w-full  flex-col  gap-5 ">
+              {typeof nearBalance === 'string' && (
+                <div className="text-md relative justify-end border border-none text-right font-normal">
+                  <div className="absolute left-0 top-0 font-bold">
+                    {formateAccount(accounts?.[0]?.accountId || '')}
+                  </div>
+
+                  <img
+                    width={24}
+                    height={24}
+                    className="mx-2 mb-1 inline-block rounded-full border border-black"
+                    src={NEAR_ICON}
+                  />
+
+                  {nearBalance}
+                </div>
+              )}
+              {signedIn && (
+                <input
+                  className=" w-full max-w-[500px]  rounded-2xl border border-black p-4 text-2xl  font-extrabold placeholder:text-sm placeholder:font-normal"
+                  placeholder={
+                    entered
+                      ? 'You already entered this round'
+                      : 'The minimum NEAR to enter lottery is 0.1 NEAR'
+                  }
+                  type="text"
+                  disabled={!signedIn || entered}
+                  value={enterSize || ''}
+                  onChange={(e) => {
+                    const targetValue = e.target.value
+                    if (targetValue !== '' && !targetValue.match(/^\d*(\.\d*)?$/)) {
+                      return
+                    }
+                    const amountIn = targetValue.replace(/^0+/, '0') // remove prefix
+
+                    setEnterSize(amountIn)
+                  }}
+                />
+              )}
+            </div>
+            <div className={`flex w-full items-center gap-10  ${signedIn ? 'pt-10' : 'pt-20'} `}>
+              <button
+                className={`${
+                  !enterLotteryAvailable && signedIn ? 'cursor-not-allowed opacity-60' : ''
+                }   w-full  items-center justify-between gap-2 rounded-2xl border-2 border-black p-4 py-4 text-2xl  font-extrabold   hover:opacity-60`}
+                onClick={!signedIn ? handleSignIn : handleEnterLottery}
+              >
+                {!signedIn ? 'Sign In To Enter Lottery' : 'Enter Lottery'}
+              </button>
+
+              {signedIn && (
+                <button
+                  className={` w-full items-center justify-between gap-2 rounded-2xl border-2 border-black p-4 py-4 text-2xl  font-extrabold   hover:opacity-30`}
+                  onClick={handleSignOut}
+                >
+                  {'Sign Out'}
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="rounded-2xl border-2 border-black p-4 pb-2">
+          <table className="max-h-max w-full min-w-[450px] rounded-2xl ">
+            <thead>
+              <tr className="rounded-tr-2xl">
+                <th className="p-2 text-left text-2xl font-semibold">Player</th>
+                <th className="p-2 text-left text-2xl font-semibold">Bet</th>
+                <th className="p-2 text-left text-2xl font-semibold">Share</th>
+              </tr>
+            </thead>
+            <tbody className="w-full">
+              {bets &&
+                bets.map((bet, index) => (
+                  <tr className="" key={index}>
+                    <td className="relative flex items-center gap-2 p-2 text-2xl font-semibold">
+                      <div
+                        className="h-[50px] w-2"
+                        style={{
+                          background: COLORS[index % COLORS.length],
+                        }}
+                      />
+
+                      {players && formateAccount(players[index])}
+                    </td>
+                    <td className="items-center gap-2 p-2 text-2xl font-semibold">
+                      {Big(bet).div(Big(10).pow(24)).toFixed()} NEAR
+                      <img
+                        width={24}
+                        height={24}
+                        className="mb-1 ml-2 inline-block rounded-full border border-black"
+                        src={NEAR_ICON}
+                      />
+                    </td>
+                    <td className="whitespace-nowrap p-2 text-2xl font-semibold">
+                      {typeof poolSize === 'string' && (
+                        <div>
+                          {Big(bet).div(Big(poolSize)).div(Big(10).pow(24)).times(100).toFixed(2)} %
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

@@ -9,3 +9,5 @@ export const connectionConfig = {
   helperUrl: 'https://api.kitwallet.app',
   explorerUrl: 'https://nearblocks.io',
 }
+export const NEAR_ICON =
+  'https://assets.coingecko.com/coins/images/18280/large/EX4mrWMW_400x400.jpg?1696517773'
