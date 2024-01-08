@@ -341,7 +341,7 @@ export default function ContractBoard() {
 
   return (
     <div className=" grid grid-cols-4 gap-24 pt-40">
-      <div className=" relative col-span-2 flex w-[600px] flex-col items-center rounded-2xl border-2 border-black shadow-lg">
+      <div className=" relative col-span-2 flex w-[600px] flex-col items-center rounded-xl border-2 border-black shadow-lg">
         {typeof lotteryRound === 'string' && (
           <div className="absolute left-4 top-4 border border-none  text-center text-3xl font-semibold">
             Round {lotteryRound}{' '}
@@ -372,7 +372,7 @@ export default function ContractBoard() {
         </div>
       </div>
       <div className=" col-span-2 flex flex-col gap-6 ">
-        <div className="flex min-h-[280px] gap-20 rounded-2xl border-2 border-black p-4 px-8">
+        <div className="flex min-h-[280px] gap-20 rounded-xl border-2 border-black p-4 px-8">
           <div className="flex w-full flex-col ">
             <div className="flex w-full  flex-col  gap-5 ">
               {typeof nearBalance === 'string' && (
@@ -435,7 +435,7 @@ export default function ContractBoard() {
             </div>
           </div>
         </div>
-        <div className="rounded-2xl border-2 border-black p-4 pb-2">
+        <div className="rounded-xl border-2 border-black p-4 pb-2">
           <table className="max-h-max w-full min-w-[450px] rounded-2xl ">
             <thead>
               <tr className="rounded-tr-2xl">
