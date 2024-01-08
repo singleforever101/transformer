@@ -104,33 +104,35 @@ export default function ContractBoard() {
 
     const account = await nearConnection.account(CONTRACT_ID)
 
-    const lotteryRound = await account.viewFunction({
+    const lotteryRound = account.viewFunction({
       contractId: CONTRACT_LOTTERY_ID,
       methodName: 'get_lottery_round',
     })
 
-    const poolSize = await account.viewFunction({
+    const poolSize = account.viewFunction({
       contractId: CONTRACT_LOTTERY_ID,
       methodName: 'get_prize_pool',
     })
 
-    const players = await account.viewFunction({
+    const players = account.viewFunction({
       contractId: CONTRACT_LOTTERY_ID,
       methodName: 'get_players',
     })
 
-    const bets = await account.viewFunction({
+    const bets = account.viewFunction({
       contractId: CONTRACT_LOTTERY_ID,
       methodName: 'get_bets',
     })
 
-    setBets(bets)
+    await Promise.all([lotteryRound, poolSize, players, bets]).then((values) => {
+      setLotteryRound(values[0].toString())
 
-    setPlayers(players)
+      const parsedPoolSize = Big(values[1]).div(Big(10).pow(24)).toFixed()
 
-    const parsedPoolSize = Big(poolSize).div(Big(10).pow(24)).toFixed()
-    setLotteryRound(lotteryRound.toString())
-    setPoolSize(parsedPoolSize.toString())
+      setPoolSize(parsedPoolSize.toString())
+      setPlayers(values[2])
+      setBets(values[3])
+    })
   }
 
   const checkNearBalance = async () => {
