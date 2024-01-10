@@ -297,20 +297,21 @@ export default function ContractBoard() {
           x={cx}
           y={cy - 35}
           dy={8}
-          fontSize={24}
+          fontSize={32}
           textAnchor="middle"
           fontWeight={60}
-          fill="#000"
+          fill="#ffffff"
         >
           Prize Size
         </text>
 
-        <text x={cx} y={cy} dy={8} fontSize={24} textAnchor="middle" fontWeight={60} fill="#000">
+        <text x={cx} y={cy} dy={8} fontSize={32} textAnchor="middle" fontWeight={60} fill="#ffffff">
           {Big(poolSize || 0)
             .times(0.95)
             .toFixed()}{' '}
           NEAR
         </text>
+
         <Sector
           cx={cx}
           cy={cy}
@@ -375,7 +376,7 @@ export default function ContractBoard() {
                 data={data}
                 cx="50%"
                 cy="50%"
-                innerRadius={150}
+                innerRadius={180}
                 outerRadius={250}
                 fill="#999"
                 dataKey="value"
@@ -388,6 +389,13 @@ export default function ContractBoard() {
               </Pie>
             </PieChart>
           </ResponsiveContainer>
+        </div>
+
+        <div className="absolute bottom-4 right-4 text-sm text-white">
+          {Big(poolSize || 0)
+            .times(0.05)
+            .toFixed()}{' '}
+          NEAR (5% for protocol fee)
         </div>
       </div>
       <div className=" col-span-2 flex flex-col gap-6  ">
