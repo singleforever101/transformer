@@ -408,7 +408,7 @@ export default function ContractBoard() {
                     placeholder={
                       entered
                         ? 'You have already entered lottery this round'
-                        : 'The minimum amount to enter lottery is 0.1 NEAR'
+                        : 'Enter your bet amount here...'
                     }
                     type="text"
                     disabled={!signedIn || entered}
