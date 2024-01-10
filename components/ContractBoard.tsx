@@ -19,7 +19,7 @@ import * as nearAPI from 'near-api-js'
 
 import { connectionConfig } from 'app/constants'
 
-const CONTRACT_ID = 'token.trmr-tkn.near'
+import { CONTRACT_ID } from 'app/constants'
 
 export default function ContractBoard() {
   const [selector, setSelector] = useState<WalletSelector>()

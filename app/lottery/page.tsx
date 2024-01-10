@@ -6,10 +6,6 @@ import { setupMyNearWallet } from '@near-wallet-selector/my-near-wallet'
 
 import Big from 'big.js'
 
-import lottery from '/public/lottery.jpg'
-
-import Image from 'next/image'
-
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer, Tooltip } from 'recharts'
 
 import {
@@ -25,20 +21,14 @@ import * as nearAPI from 'near-api-js'
 import usePolling from 'app/hooks'
 import { NEAR_ICON } from 'app/constants'
 
-const CONTRACT_ID = 'token.trmr-tkn.near'
+import { CONTRACT_ID } from 'app/constants'
 
-const CONTRACT_LOTTERY_ID = 'trmr-tkn.near'
+import { CONTRACT_LOTTERY_ID } from 'app/constants'
 
-const connectionConfig = {
-  networkId: 'mainnet',
-  nodeUrl: 'https://rpc.mainnet.near.org',
-  walletUrl: 'https://wallet.near.org',
-  helperUrl: 'https://api.kitwallet.app',
-  explorerUrl: 'https://nearblocks.io',
-}
+import { connectionConfig } from 'app/constants'
 
 const formateAccount = (accountId: string) => {
-  if (accountId.endsWith('.near')) {
+  if (accountId.endsWith('.near') || accountId.endsWith('.testnet')) {
     return accountId
   }
 
@@ -73,20 +63,8 @@ export default function ContractBoard() {
   const [nearBalance, setNearBalance] = useState<string>()
 
   useEffect(() => {
-    const el = document.body
-    if (el) {
-      el.classList.add('lotteryBg')
-    }
-    return () => {
-      if (el) {
-        el.classList.remove('lotteryBg')
-      }
-    }
-  }, [])
-
-  useEffect(() => {
     setupWalletSelector({
-      network: 'mainnet',
+      network: connectionConfig.networkId as 'mainnet' | 'testnet',
       modules: [setupMyNearWallet()],
     }).then(async (selector) => {
       setSelector(selector)
@@ -265,6 +243,8 @@ export default function ContractBoard() {
     }
   })
 
+  const noData = typeof bets !== 'undefined' && data instanceof Array && data.length === 0
+
   const renderActiveShape = (props) => {
     const RADIAN = Math.PI / 180
     const {
@@ -283,16 +263,14 @@ export default function ContractBoard() {
 
     const sin = Math.sin(-RADIAN * midAngle)
     const cos = Math.cos(-RADIAN * midAngle)
-    const sx = cx + (outerRadius + 10) * cos
-    const sy = cy + (outerRadius + 10) * sin
     const mx = cx + (outerRadius + 30) * cos
     const my = cy + (outerRadius + 30) * sin
-    const ex = mx + (cos >= 0 ? 1 : -1) * 22
+    const ex = mx + (cos >= 0 ? 1 : -1) * (cos >= 0 ? 10 : -10)
     const ey = my
     const textAnchor = cos >= 0 ? 'start' : 'end'
 
     return (
-      <g className="border-none outline-none focus:outline-none" stroke="none">
+      <g className="z-50 border-none outline-none focus:outline-none" stroke="none">
         <text
           x={cx}
           y={cy - 35}
@@ -300,12 +278,12 @@ export default function ContractBoard() {
           fontSize={32}
           textAnchor="middle"
           fontWeight={60}
-          fill="#ffffff"
+          fill="#000"
         >
           Prize Size
         </text>
 
-        <text x={cx} y={cy} dy={8} fontSize={32} textAnchor="middle" fontWeight={60} fill="#ffffff">
+        <text x={cx} y={cy} dy={8} fontSize={32} textAnchor="middle" fontWeight={60} fill="#000">
           {Big(poolSize || 0)
             .times(0.95)
             .toFixed()}{' '}
@@ -332,7 +310,7 @@ export default function ContractBoard() {
           fill={fill}
           stroke="none"
         />
-        <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" />
+        {/* <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" /> */}
         <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
         <text
           x={ex + (cos >= 0 ? 1 : -1) * 12}
@@ -360,7 +338,7 @@ export default function ContractBoard() {
 
   return (
     <div className="  relative grid grid-cols-4 gap-24 pt-40">
-      <div className=" relative col-span-2 flex w-[600px] flex-col items-center rounded-xl border-2 border-black  bg-gray-400 bg-opacity-70 shadow-lg">
+      <div className=" relative col-span-2 flex w-[600px] flex-col items-center rounded-xl border-2 border-black  bg-gray-200 bg-opacity-70 shadow-lg">
         {typeof lotteryRound === 'string' && (
           <div className="absolute left-4 top-4 border border-none  text-center text-3xl font-semibold">
             Round {lotteryRound}{' '}
@@ -376,8 +354,9 @@ export default function ContractBoard() {
                 data={data}
                 cx="50%"
                 cy="50%"
-                innerRadius={180}
-                outerRadius={250}
+                overflow={'visible'}
+                innerRadius={150}
+                outerRadius={200}
                 fill="#999"
                 dataKey="value"
                 paddingAngle={2}
@@ -391,15 +370,19 @@ export default function ContractBoard() {
           </ResponsiveContainer>
         </div>
 
-        <div className="absolute bottom-4 right-4 text-sm text-white">
+        {noData && (
+          <div className="absolute top-1/2 text-3xl font-semibold">No Players in this round</div>
+        )}
+
+        <div className="absolute bottom-4 right-4 text-sm text-black">
           {Big(poolSize || 0)
             .times(0.05)
             .toFixed()}{' '}
-          NEAR (5% for protocol fee)
+          NEAR (5%) for protocol fee
         </div>
       </div>
       <div className=" col-span-2 flex flex-col gap-6  ">
-        <div className="flex min-h-[280px] gap-20 rounded-xl border-2 border-black bg-gray-400 bg-opacity-70 p-4 px-8">
+        <div className="flex min-h-[280px] gap-20 rounded-xl border-2 border-black bg-gray-200 bg-opacity-70 p-4 px-8">
           <div className="flex w-full flex-col ">
             <div className="flex w-full  flex-col  gap-5 ">
               {typeof nearBalance === 'string' && (
@@ -462,7 +445,7 @@ export default function ContractBoard() {
             </div>
           </div>
         </div>
-        <div className="rounded-xl border-2 border-black bg-gray-400 bg-opacity-70 p-4 pb-2">
+        <div className="rounded-xl border-2 border-black bg-gray-200 bg-opacity-70 p-4 pb-2">
           <table className="max-h-max w-full min-w-[450px] rounded-2xl ">
             <thead>
               <tr className="rounded-tr-2xl">
@@ -474,7 +457,7 @@ export default function ContractBoard() {
             <tbody className="w-full">
               {bets &&
                 bets.map((bet, index) => (
-                  <tr className="" key={index}>
+                  <tr className="whitespace-nowrap" key={index}>
                     <td className="relative flex items-center gap-2 p-2 text-2xl font-semibold">
                       <div
                         className="h-[50px] w-2"
