@@ -402,26 +402,32 @@ export default function ContractBoard() {
                 </div>
               )}
               {signedIn && (
-                <input
-                  className=" w-full max-w-[500px] rounded-2xl  border border-gray-600 bg-gray-100 p-4 text-2xl  font-extrabold placeholder:text-sm placeholder:font-normal"
-                  placeholder={
-                    entered
-                      ? 'You have already entered this round'
-                      : 'The minimum amount to enter lottery is 0.1 NEAR'
-                  }
-                  type="text"
-                  disabled={!signedIn || entered}
-                  value={enterSize || ''}
-                  onChange={(e) => {
-                    const targetValue = e.target.value
-                    if (targetValue !== '' && !targetValue.match(/^\d*(\.\d*)?$/)) {
-                      return
+                <>
+                  <input
+                    className=" w-full max-w-[500px] rounded-2xl  border border-gray-600 bg-gray-100 p-4 text-2xl  font-extrabold placeholder:text-sm placeholder:font-normal"
+                    placeholder={
+                      entered
+                        ? 'You have already entered lottery this round'
+                        : 'The minimum amount to enter lottery is 0.1 NEAR'
                     }
-                    const amountIn = targetValue.replace(/^0+/, '0') // remove prefix
+                    type="text"
+                    disabled={!signedIn || entered}
+                    value={enterSize || ''}
+                    onChange={(e) => {
+                      const targetValue = e.target.value
+                      if (targetValue !== '' && !targetValue.match(/^\d*(\.\d*)?$/)) {
+                        return
+                      }
+                      const amountIn = targetValue.replace(/^0+/, '0') // remove prefix
 
-                    setEnterSize(amountIn)
-                  }}
-                />
+                      setEnterSize(amountIn)
+                    }}
+                  />
+
+                  <div className="text-end text-sm text-opacity-50">
+                    *The minimum amount to enter lottery is 0.1 NEAR
+                  </div>
+                </>
               )}
             </div>
             <div className={`flex w-full items-center gap-10  ${signedIn ? 'pt-10' : 'pt-20'} `}>
