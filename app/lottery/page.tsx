@@ -50,6 +50,8 @@ export default function ContractBoard() {
 
   const [lastRoundWinner, setLastRoundWinner] = useState<string>()
 
+  const [lastRoundWinnerTx, setLastRoundWinnerTx] = useState<string>('')
+
   const [refresh, setRefresh] = useState<boolean>(false)
 
   const [lotteryRound, setLotteryRound] = useState<string>()
@@ -76,7 +78,10 @@ export default function ContractBoard() {
             txn.receiver_account_id !== 'trmr-tkn.near' && txn.receiver_account_id !== 'trmr.near'
           )
         })
+
         setLastRoundWinner(last_round_winner_tx?.receiver_account_id)
+
+        setLastRoundWinnerTx(last_round_winner_tx?.transaction_hash)
       })
   }, [])
 
@@ -358,12 +363,19 @@ export default function ContractBoard() {
     <div className="  relative grid grid-cols-4 gap-24 pt-40">
       <div className=" relative col-span-2 flex w-[600px] flex-col items-center rounded-xl border-2 border-black  bg-gray-200 bg-opacity-70 shadow-lg">
         {lastRoundWinner && (
-          <div className="absolute top-4 flex w-full items-center justify-between gap-20 whitespace-nowrap border border-none px-4  text-center text-3xl font-semibold">
+          <div className="absolute top-3 z-50 flex w-full items-center justify-between gap-20 whitespace-nowrap border border-none px-4  text-center text-3xl font-semibold">
             <div>Round {lotteryRound} </div>
 
             {typeof lotteryRound === 'string' && (
-              <div className="flex max-w-max items-center justify-between gap-20 whitespace-nowrap border border-none  text-center text-lg font-semibold">
-                Last Round Winner: {formateAccount(lastRoundWinner || '')}
+              <div className="max-w-max items-center gap-20 whitespace-nowrap border border-none text-center  text-lg font-semibold ">
+                Last Round Winner:{' '}
+                <a
+                  className="inline-block underline"
+                  href={`https://nearblocks.io/txns/${lastRoundWinnerTx}`}
+                  target="_blank"
+                >
+                  {formateAccount(lastRoundWinner || '')}
+                </a>
               </div>
             )}
           </div>
