@@ -48,6 +48,8 @@ export default function ContractBoard() {
 
   const [accounts, setAccounts] = useState<Array<AccountState>>([])
 
+  const [lastRoundWinner, setLastRoundWinner] = useState<string>()
+
   const [refresh, setRefresh] = useState<boolean>(false)
 
   const [lotteryRound, setLotteryRound] = useState<string>()
@@ -61,6 +63,22 @@ export default function ContractBoard() {
   const [pieActiveIndex, setPieActiveInedx] = useState<number>(0)
 
   const [nearBalance, setNearBalance] = useState<string>()
+
+  useEffect(() => {
+    fetch(
+      'https://api.nearblocks.io/v1/account/trmr-tkn.near/txns?action=TRANSFER&page=1&per_page=25&order=desc'
+    )
+      .then((res) => res.json())
+      .then((res) => {
+        const txns = res.txns
+        const last_round_winner_tx = txns.find((txn) => {
+          return (
+            txn.receiver_account_id !== 'trmr-tkn.near' && txn.receiver_account_id !== 'trmr.near'
+          )
+        })
+        setLastRoundWinner(last_round_winner_tx?.receiver_account_id)
+      })
+  }, [])
 
   useEffect(() => {
     setupWalletSelector({
@@ -339,9 +357,15 @@ export default function ContractBoard() {
   return (
     <div className="  relative grid grid-cols-4 gap-24 pt-40">
       <div className=" relative col-span-2 flex w-[600px] flex-col items-center rounded-xl border-2 border-black  bg-gray-200 bg-opacity-70 shadow-lg">
-        {typeof lotteryRound === 'string' && (
-          <div className="absolute left-4 top-4 border border-none  text-center text-3xl font-semibold">
-            Round {lotteryRound}{' '}
+        {lastRoundWinner && (
+          <div className="absolute top-4 flex w-full items-center justify-between gap-20 whitespace-nowrap border border-none px-4  text-center text-3xl font-semibold">
+            <div>Round {lotteryRound} </div>
+
+            {typeof lotteryRound === 'string' && (
+              <div className="flex max-w-max items-center justify-between gap-20 whitespace-nowrap border border-none  text-center text-lg font-semibold">
+                Last Round Winner: {formateAccount(lastRoundWinner || '')}
+              </div>
+            )}
           </div>
         )}
 
